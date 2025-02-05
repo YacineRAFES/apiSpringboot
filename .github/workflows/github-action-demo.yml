@@ -54,3 +54,16 @@ jobs:
           retention-days: 1
 
       - run: echo "This job's status is ${{ job.status }}."
+  Discord:
+    name: Discord
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          description: 'Le projet Springboot a été build avec succès'
