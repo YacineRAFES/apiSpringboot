@@ -1,4 +1,4 @@
-name: {{github.author}} teste sonarcloud
+name: ${{ github.author }} teste sonarcloud
 on:
   push:
     branches:
