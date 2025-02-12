@@ -90,7 +90,7 @@ jobs:
     docker-build-image-api:
         if: ${{ github.ref == 'refs/heads/main' }}
         runs-on: ubuntu-latest
-        nneds:
+        needs:
             - artifact
         steps:
             - uses: actions/checkout@v4
