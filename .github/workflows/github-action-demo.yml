@@ -56,13 +56,13 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: ~/.m2
-                  key: ${{ runner.os }}-m2-${{ hashFiles('apiSpringboot/pom.xml') }}
+                  key: ${{ runner.os }}-m2-${{ hashFiles('srpingbootAPIWEB/apiSpringboot/pom.xml') }}
                   restore-keys: ${{ runner.os }}-m2
             - name: Build and analyze
               env:
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=YacineRAFES_apiSpringboot
-              working-directory: ./apiSpringboot
+              working-directory: ./springbootAPIWEB/apiSpringboot
 
     artifact:
         name: Artifact
@@ -73,7 +73,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: package.jar
-                  path: apiSpringboot/target/*.jar
+                  path: springbootAPIWEB/apiSpringboot/target/*.jar
                   retention-days: 1
 
     Discord:
@@ -123,8 +123,8 @@ jobs:
             - name: Build and push
               uses: docker/build-push-action@v5
               with:
-                  context: ./apiSpringboot
-                  file: ./apiSpringboot/Dockerfile
+                  context: ./springbootAPIWEB/apiSpringboot
+                  file: ./springbootAPIWEB/apiSpringboot/Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKER_USERNAME }}/apiSpringboot:latest
             - run: echo "This job's status is ${{ job.status }}."
