@@ -40,6 +40,7 @@ jobs:
               with:
                   java-version: 21
                   distribution: 'zulu'
+
     sonarcloud:
         name: Sonarcloud Maven
         runs-on: ubuntu-latest
@@ -55,12 +56,14 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: ~/.m2
-                  key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+                  key: ${{ runner.os }}-m2-${{ hashFiles('apiSpringboot/pom.xml') }}
                   restore-keys: ${{ runner.os }}-m2
             - name: Build and analyze
               env:
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=YacineRAFES_apiSpringboot
+              working-directory: ./apiSpringboot
+
     artifact:
         name: Artifact
         runs-on: ubuntu-latest
@@ -70,9 +73,8 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: package.jar
-                  path: target/*.jar
+                  path: apiSpringboot/target/*.jar
                   retention-days: 1
-
 
     Discord:
         name: Discord
@@ -87,6 +89,7 @@ jobs:
               if: always()
               with:
                   description: 'Le projet Springboot a été build avec succès'
+
     docker-build-image-api:
         if: ${{ github.ref == 'refs/heads/main' }}
         runs-on: ubuntu-latest
@@ -94,7 +97,7 @@ jobs:
             - artifact
         steps:
             - uses: actions/checkout@v4
-              
+
             - name: Set Up QEMU
               uses: docker/setup-qemu-action@v3
 
@@ -121,7 +124,7 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                   context: ./apiSpringboot
-                  file: ./Dockerfile
+                  file: ./apiSpringboot/Dockerfile
                   push: true
                   tags: ${{ secrets.DOCKER_USERNAME }}/apiSpringboot:latest
             - run: echo "This job's status is ${{ job.status }}."
