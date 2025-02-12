@@ -1,4 +1,4 @@
-name: CI build
+name: TestAvecPlusieursJobs
 on:
     push:
         branches:
@@ -20,7 +20,7 @@ jobs:
               run: mysql -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASSWORD }} -e "source infra/mysql/dump/springboot.sql"
     selenium:
         name: Selenium
-        need: build
+        needs: build
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
               run: chrome --version
     java:
         name: Java
-        need: selenium
+        needs: selenium
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -42,7 +42,7 @@ jobs:
                   distribution: 'zulu'
     sonarcloud:
         name: Sonarcloud
-        need: java
+        needs: java
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
                 run: ls ${{ github.workspace }}
     artifact:
         name: Artifact
-        need: sonarcloud
+        needs: sonarcloud
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
