@@ -52,6 +52,10 @@ jobs:
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=YacineRAFES_apiSpringboot
 
+            # juste pour le contrôler
+            -   name: List files in the repository
+                run: ls ${{ github.workspace }}
+
             - name: Charging artefact #permet de charger un artefact
               uses: actions/upload-artifact@v4
               with:
