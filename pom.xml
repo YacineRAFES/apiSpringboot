@@ -11,7 +11,7 @@
 	<groupId>fr.afpa.pompey</groupId>
 	<artifactId>apiSpringboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>apiSpringboot</name>
+	<name>APIweb</name>
 	<description>apiSpringboot pour tester l'API</description>
 	<url/>
 	<licenses>
